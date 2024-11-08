@@ -5,6 +5,9 @@
 const int scrHeight = 800;
 const int scrWidth	= 600;
 
+void framebuffer_size_callback(GLFWwindow* window, int height, int width);
+void processInput(GLFWwindow* window);
+
 int main(void)
 {
 	// initialize glfw version and profile
@@ -20,17 +23,38 @@ int main(void)
 		glfwTerminate();
 		return -1;
 	}
-	else {
-		glfwMakeContextCurrent(window);
-	}
+	glfwMakeContextCurrent(window);
+	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback); // resizes viewport when user changes window size
 
 	// set up glad pointer
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
 		std::cerr << "Failed to initialize GLAD" << std::endl;
+		glfwTerminate();
+		return -1;
 	}
 
-	// set up viewport dimensions
-	glViewport(0, 0, scrHeight, scrWidth);
+	// render
+	while (!glfwWindowShouldClose(window)) {
+		processInput(window);
 
+		// render settings
+		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
+
+		glfwSwapBuffers(window);
+		glfwPollEvents();
+	}
+	
+	glfwTerminate();
 	return 0;
+}
+
+void framebuffer_size_callback(GLFWwindow* window, int height, int width) {
+	glViewport(0, 0, height, width);
+}
+
+void processInput(GLFWwindow* window) {
+	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+		glfwSetWindowShouldClose(window, true);
+	}
 }
