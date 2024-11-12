@@ -8,8 +8,7 @@ const int scrWidth	= 600;
 void framebuffer_size_callback(GLFWwindow* window, int height, int width);
 void processInput(GLFWwindow* window);
 
-int main(void)
-{
+int main(void) {
 	// initialize glfw version and profile
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -32,6 +31,21 @@ int main(void)
 		glfwTerminate();
 		return -1;
 	}
+
+	// simple triangle vertex
+	float vertices[] = {
+		-0.5f, -0.5f, 0.0f, 	
+		 0.5f, -0.5f, 0.0f, 	
+		 0.0f,  0.5f, 0.0f, 	
+	};
+
+	// create buffer object and bind it to GL_ARRAY_BUFFER
+	unsigned int VBO;
+	glGenBuffers(1, &VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+
+	// copy custom vertex to VBO
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
 	// render
 	while (!glfwWindowShouldClose(window)) {
