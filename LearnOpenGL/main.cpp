@@ -128,7 +128,7 @@ int main(void) {
 		return -1;
 	}
 
-	// use shader program and clean-up individual shader programs
+	// use shader program and clean-up individual shaders
 	glUseProgram(shaderProgram);
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
