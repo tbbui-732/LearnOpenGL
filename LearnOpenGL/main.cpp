@@ -102,7 +102,36 @@ int main(void) {
 		glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
 		std::cout << "Fragment shader was unable to compile properly\n"
 			<< infoLog << std::endl;
+		return -1;
 	}
+
+
+	////////////////////////////
+	////// SHADER PROGRAM //////
+	////////////////////////////
+
+	// create shader program
+	unsigned int shaderProgram;
+	shaderProgram = glCreateProgram();
+
+	// attach and link vertex and fragment shaders
+	glAttachShader(shaderProgram, vertexShader);
+	glAttachShader(shaderProgram, fragmentShader);
+	glLinkProgram(shaderProgram);
+
+	// check shader program's compilation status
+	glGetProgramiv(shaderProgram, GL_COMPILE_STATUS, &success);
+	if (!success) {
+		glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
+		std::cerr << "Shader program was unable to compile properly\n"
+			<< infoLog << std::endl;
+		return -1;
+	}
+
+	// use shader program and clean-up individual shader programs
+	glUseProgram(shaderProgram);
+	glDeleteShader(vertexShader);
+	glDeleteShader(fragmentShader);
 
 
 	//////////////////
