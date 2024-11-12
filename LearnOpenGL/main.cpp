@@ -4,10 +4,17 @@
 
 const int scrHeight = 800;
 const int scrWidth	= 600;
+
 const char *vertexShaderSource = "#version 330 core\n"
 	"layout (location = 0) in vec3 aPos;\n"
 	"void main() {\n"
 	" gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+	"}\0";
+
+const char *fragmentShaderSource = "#version 330 core\n"
+	"out vec4 FragColor\n"
+	"void main() {\n"
+	" FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
 	"}\0";
 
 void framebuffer_size_callback(GLFWwindow* window, int height, int width);
@@ -37,6 +44,10 @@ int main(void) {
 		return -1;
 	}
 
+	/////////////////
+	////// VBO //////
+	/////////////////
+
 	// simple triangle vertex
 	float vertices[] = {
 		-0.5f, -0.5f, 0.0f, 	
@@ -52,24 +63,52 @@ int main(void) {
 	// copy custom vertex to VBO
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-	// create, attach, and compile shader
+
+	///////////////////////////
+	////// VERTEX SHADER //////
+	///////////////////////////
+
+	// create, attach, and compile vertex shader
 	unsigned int vertexShader;
 	vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
 	glCompileShader(vertexShader);
 	
-	// make sure shader compiles properly
+	// error check vertex shader compilation
 	int success;
 	char infoLog[512];
 	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
 	if (!success) {
 		glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-		std::cout << "Shader was unable to compile properly\n"
+		std::cout << "Vertex shader was unable to compile properly\n"
 			<< infoLog << std::endl;
 		return -1;
 	}
 
-	// render
+
+	/////////////////////////////
+	////// FRAGMENT SHADER //////
+	/////////////////////////////
+
+	// create, attach, and compile fragment shader
+	unsigned int fragmentShader;
+	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+	glCompileShader(fragmentShader);
+
+	// error check fragment shader compilation
+	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
+	if (!success) {
+		glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
+		std::cout << "Fragment shader was unable to compile properly\n"
+			<< infoLog << std::endl;
+	}
+
+
+	//////////////////
+	///// RENDER /////
+	//////////////////
+
 	while (!glfwWindowShouldClose(window)) {
 		processInput(window);
 
