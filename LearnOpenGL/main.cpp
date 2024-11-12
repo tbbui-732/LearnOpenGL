@@ -24,7 +24,7 @@ const char* fragmentShaderSource = "#version 330 core\n"
 
 void framebuffer_size_callback(GLFWwindow* window, int height, int width);
 void processInput(GLFWwindow* window);
-bool programCompiled(unsigned int& shader, const char* shaderName, bool isShaderProgram = false);
+bool programCompiled(unsigned int& shader, const char* shaderName, bool isShaderProgram);
 
 int main(void) {
 	// initialize glfw version and profile
@@ -81,7 +81,7 @@ int main(void) {
 	glCompileShader(vertexShader);
 	
 	// error check vertex shader compilation
-	if (!programCompiled(vertexShader, "Vertex shader")) {
+	if (!programCompiled(vertexShader, "Vertex shader", false)) {
 		exit(1);
 	}
 
@@ -97,7 +97,7 @@ int main(void) {
 	glCompileShader(fragmentShader);
 
 	// error check fragment shader compilation
-	if (!programCompiled(fragmentShader, "Fragment shader")) {
+	if (!programCompiled(fragmentShader, "Fragment shader", false)) {
 		exit(1);
 	}
 
@@ -157,7 +157,7 @@ void processInput(GLFWwindow* window) {
 	}
 }
 
-bool programCompiled(unsigned int &shader, const char *shaderName, bool isShaderProgram = false) {
+bool programCompiled(unsigned int& shader, const char* shaderName, bool isShaderProgram) {
 	int success;
 	char log[LOG_SZ];
 	if (!isShaderProgram) { // checks shaders
