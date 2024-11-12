@@ -4,6 +4,11 @@
 
 const int scrHeight = 800;
 const int scrWidth	= 600;
+const char *vertexShaderSource = "#version 330 core\n"
+	"layout (location = 0) in vec3 aPos;\n"
+	"void main() {\n"
+	" gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+	"}\0";
 
 void framebuffer_size_callback(GLFWwindow* window, int height, int width);
 void processInput(GLFWwindow* window);
@@ -46,6 +51,23 @@ int main(void) {
 
 	// copy custom vertex to VBO
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	// create, attach, and compile shader
+	unsigned int vertexShader;
+	vertexShader = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+	glCompileShader(vertexShader);
+	
+	// make sure shader compiles properly
+	int success;
+	char infoLog[512];
+	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
+	if (!success) {
+		glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
+		std::cout << "Shader was unable to compile properly\n"
+			<< infoLog << std::endl;
+		return -1;
+	}
 
 	// render
 	while (!glfwWindowShouldClose(window)) {
