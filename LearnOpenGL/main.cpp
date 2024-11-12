@@ -24,7 +24,7 @@ const char* fragmentShaderSource = "#version 330 core\n"
 
 void framebuffer_size_callback(GLFWwindow* window, int height, int width);
 void processInput(GLFWwindow* window);
-bool programCompiled(unsigned int& shader, const char* shaderName);
+bool programCompiled(unsigned int& shader, const char* shaderName, bool isShaderProgram = false);
 
 int main(void) {
 	// initialize glfw version and profile
@@ -116,7 +116,7 @@ int main(void) {
 	glLinkProgram(shaderProgram);
 
 	// check shader program's compilation status
-	if (!programCompiled(shaderProgram, "Shader program")) {
+	if (!programCompiled(shaderProgram, "Shader program", true)) {
 		exit(1);
 	}
 
@@ -157,15 +157,26 @@ void processInput(GLFWwindow* window) {
 	}
 }
 
-bool programCompiled(unsigned int &shader, const char *shaderName) {
+bool programCompiled(unsigned int &shader, const char *shaderName, bool isShaderProgram = false) {
 	int success;
 	char log[LOG_SZ];
-	glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-	if (!success) {
-		glGetShaderInfoLog(shader, LOG_SZ, NULL, log);
-		std::cerr << shaderName << " was unable to compile properly\n"
-			<< log << std::endl;
-		return false;
+	if (!isShaderProgram) { // checks shaders
+		glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+		if (!success) {
+			glGetShaderInfoLog(shader, LOG_SZ, NULL, log);
+			std::cerr << shaderName << " was unable to compile properly\n"
+				<< log << std::endl;
+			return false;
+		}
+	}
+	else { // check shader programs
+		glGetProgramiv(shader, GL_COMPILE_STATUS, &success);
+		if (!success) {
+			glGetProgramInfoLog(shader, LOG_SZ, NULL, log);
+			std::cerr << shaderName << " was unable to compile properly\n"
+				<< log << std::endl;
+			return false;
+		}
 	}
 	return true;
 }
