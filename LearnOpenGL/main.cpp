@@ -1,24 +1,30 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include <cstdlib>
 
 const int scrHeight = 800;
 const int scrWidth	= 600;
+const int LOG_SZ	= 512;
 
 const char *vertexShaderSource = "#version 330 core\n"
-	"layout (location = 0) in vec3 aPos;\n"
-	"void main() {\n"
-	" gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-	"}\0";
+"layout (location = 0) in vec3 aPos;\n"
+"void main()\n"
+"{\n"
+" gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+"}\0";
 
-const char *fragmentShaderSource = "#version 330 core\n"
-	"out vec4 FragColor\n"
-	"void main() {\n"
-	" FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-	"}\0";
+const char* fragmentShaderSource = "#version 330 core\n"
+"out vec4 FragColor;\n"
+"void main()\n"
+"{\n"
+" FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+"}\0";
+
 
 void framebuffer_size_callback(GLFWwindow* window, int height, int width);
 void processInput(GLFWwindow* window);
+bool programCompiled(unsigned int& shader, const char* shaderName);
 
 int main(void) {
 	// initialize glfw version and profile
@@ -75,14 +81,8 @@ int main(void) {
 	glCompileShader(vertexShader);
 	
 	// error check vertex shader compilation
-	int success;
-	char infoLog[512];
-	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-	if (!success) {
-		glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-		std::cout << "Vertex shader was unable to compile properly\n"
-			<< infoLog << std::endl;
-		return -1;
+	if (!programCompiled(vertexShader, "Vertex shader")) {
+		exit(1);
 	}
 
 
@@ -97,12 +97,8 @@ int main(void) {
 	glCompileShader(fragmentShader);
 
 	// error check fragment shader compilation
-	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-	if (!success) {
-		glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-		std::cout << "Fragment shader was unable to compile properly\n"
-			<< infoLog << std::endl;
-		return -1;
+	if (!programCompiled(fragmentShader, "Fragment shader")) {
+		exit(1);
 	}
 
 
@@ -120,16 +116,14 @@ int main(void) {
 	glLinkProgram(shaderProgram);
 
 	// check shader program's compilation status
-	glGetProgramiv(shaderProgram, GL_COMPILE_STATUS, &success);
-	if (!success) {
-		glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-		std::cerr << "Shader program was unable to compile properly\n"
-			<< infoLog << std::endl;
-		return -1;
+	if (!programCompiled(shaderProgram, "Shader program")) {
+		exit(1);
 	}
 
-	// use shader program and clean-up individual shaders
+	// use shader program 
 	glUseProgram(shaderProgram);
+
+	// clean-up individual shaders
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
 
@@ -161,4 +155,17 @@ void processInput(GLFWwindow* window) {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
 		glfwSetWindowShouldClose(window, true);
 	}
+}
+
+bool programCompiled(unsigned int &shader, const char *shaderName) {
+	int success;
+	char log[LOG_SZ];
+	glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+	if (!success) {
+		glGetShaderInfoLog(shader, LOG_SZ, NULL, log);
+		std::cerr << shaderName << " was unable to compile properly\n"
+			<< log << std::endl;
+		return false;
+	}
+	return true;
 }
