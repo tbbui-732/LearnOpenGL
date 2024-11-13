@@ -27,6 +27,10 @@ void processInput(GLFWwindow* window);
 bool programCompiled(unsigned int& shader, const char* shaderName, bool isShaderProgram);
 
 int main(void) {
+	/////////////////////////
+	////// GLFW & GLAD //////
+	/////////////////////////
+	
 	// initialize glfw version and profile
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -142,6 +146,8 @@ int main(void) {
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), (void*) 0);
 	glEnableVertexAttribArray(0);
 
+	// uncomment for wireframe polygons
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	//////////////////
 	///// RENDER /////
@@ -162,6 +168,11 @@ int main(void) {
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
+
+	// deallocate everything once program terminates
+	glDeleteVertexArrays(1, &VAO);
+	glDeleteBuffers(1, &VBO);
+	glDeleteProgram(shaderProgram);
 	
 	glfwTerminate();
 	return 0;
