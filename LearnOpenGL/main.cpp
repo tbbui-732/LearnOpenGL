@@ -50,6 +50,15 @@ int main(void) {
 		return -1;
 	}
 
+
+	/////////////////
+	////// VAO //////
+	/////////////////
+	unsigned int VAO;
+	glGenVertexArrays(1, &VAO);
+	glBindVertexArray(VAO);
+
+
 	/////////////////
 	////// VBO //////
 	/////////////////
@@ -120,9 +129,6 @@ int main(void) {
 		exit(1);
 	}
 
-	// use shader program 
-	glUseProgram(shaderProgram);
-
 	// clean-up individual shaders
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
@@ -137,7 +143,6 @@ int main(void) {
 	glEnableVertexAttribArray(0);
 
 
-
 	//////////////////
 	///// RENDER /////
 	//////////////////
@@ -145,9 +150,14 @@ int main(void) {
 	while (!glfwWindowShouldClose(window)) {
 		processInput(window);
 
-		// render settings
+		// background
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
+		
+		// draw triangle
+		glUseProgram(shaderProgram);
+		glBindVertexArray(VAO);
+		glDrawArrays(GL_TRIANGLES, 0, 3);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
