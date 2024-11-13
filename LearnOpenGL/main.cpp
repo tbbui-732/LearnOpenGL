@@ -128,6 +128,16 @@ int main(void) {
 	glDeleteShader(fragmentShader);
 
 
+	///////////////////////////////////////
+	////// LINKING VERTEX ATTRIBUTES //////
+	///////////////////////////////////////
+
+	// interpret vertex data as 3 un-normalized floating values
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), (void*) 0);
+	glEnableVertexAttribArray(0);
+
+
+
 	//////////////////
 	///// RENDER /////
 	//////////////////
