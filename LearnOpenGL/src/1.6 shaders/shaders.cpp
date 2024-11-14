@@ -129,6 +129,11 @@ int main(void) {
 	///// RENDER /////
 	//////////////////
 	int uniformLocation = glGetUniformLocation(shaderProgram, "ourColor");
+	if (uniformLocation == -1) {
+		std::cerr << "Could not get uniform location for shader program\n" << std::endl;
+		exit(1);
+	}
+
 	float timeValue, greenValue;
 	while (!glfwWindowShouldClose(window)) {
 		processInput(window);
