@@ -56,13 +56,6 @@ int main(void) {
 	//////////////////////
 	////// VERTICES //////
 	//////////////////////
-	// vertices for triangle
-	float vertices[] = {
-		-0.5f, -0.5f, 0.0f, 	
-		 0.5f, -0.5f, 0.0f, 	
-		 0.0f,  0.5f, 0.0f, 	
-	};
-
 	// vertices for rectangle
 	float rectangleVertices[] = {
 		 0.5f,  0.5f, 0.0f,  // top right
@@ -181,11 +174,6 @@ int main(void) {
 		// background
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-		
-		// draw triangle
-		//glUseProgram(shaderProgram);
-		//glBindVertexArray(VAO);
-		//glDrawArrays(GL_TRIANGLES, 0, 3);
 
 		// draw rectangle
 		glUseProgram(shaderProgram);
