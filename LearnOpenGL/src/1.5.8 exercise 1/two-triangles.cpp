@@ -58,9 +58,20 @@ int main(void) {
 	//////////////////////
 	// vertices for triangle
 	float vertices[] = {
-		-0.5f, -0.5f, 0.0f, 	
-		 0.5f, -0.5f, 0.0f, 	
-		 0.0f,  0.5f, 0.0f, 	
+		// test triangle
+		//-0.5f, -0.5f, 0.0f, 	
+		// 0.5f, -0.5f, 0.0f, 	
+		// 0.0f,  0.5f, 0.0f, 	
+
+		// first triangle
+		-0.75f, 0.9f,  0.0f,
+		-0.75f, 0.25f, 0.0f, 	
+		-0.25f, 0.9f,  0.0f, 	
+
+		// second triangle
+		0.75f, -0.9f,  0.0f,
+		0.75f, -0.25f, 0.0f,
+		0.25f, -0.9f,  0.0f
 	};
 
 	/////////////////
@@ -159,7 +170,7 @@ int main(void) {
 		// draw triangle
 		glUseProgram(shaderProgram);
 		glBindVertexArray(VAO);
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glDrawArrays(GL_TRIANGLES, 0, 6);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
