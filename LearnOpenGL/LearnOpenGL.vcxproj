@@ -134,6 +134,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="glad.c" />
+    <ClCompile Include="src\1.6 shaders\shaders.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dependencies\include\glad\glad.h" />
