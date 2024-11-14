@@ -142,12 +142,14 @@ int main(void) {
 		glClearColor(0.1f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		// draw
+		// update uniform
 		glUseProgram(shaderProgram);
-		glBindVertexArray(VAO);
 		timeValue = glfwGetTime();
 		greenValue = (sin(timeValue) / 2.0f) + 0.5f;
 		glUniform4f(uniformLocation, 0.0f, greenValue, 0.0f, 1.0f); // continuously update the green value
+
+		// draw triangle
+		glBindVertexArray(VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 
 		glfwSwapBuffers(window);
