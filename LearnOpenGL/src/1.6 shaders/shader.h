@@ -87,7 +87,9 @@ public:
 	}
 
 	// activates shader program
-	void use(); 
+	void use() {
+		glUseProgram(ID);
+	}
 
 	// queries uniform location and sets its value
 	void setBool(const std::string &name, bool value) const;
