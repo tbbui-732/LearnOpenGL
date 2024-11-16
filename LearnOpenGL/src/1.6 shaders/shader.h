@@ -11,7 +11,7 @@ public:
 	unsigned int ID;
 
 	Shader(const char* vertexPath, const char* fragmentPath) {
-		// retrieve source code from file paths
+		// 1. retrieve source code from file paths
 		std::string vertexCodeStr, fragmentCodeStr;
 		std::ifstream vertexFile, fragmentFile;
 		vertexFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
@@ -39,8 +39,35 @@ public:
 			std::cout << "ERROR::SHADER::FILE_NOT_SUCCESSFULLY_READ" << std::endl;
 		}
 
-		const char* vertexShaderCode = vertexCodeStr.c_str();
-		const char* fragmentShaderCode = fragmentCodeStr.c_str();
+		const char* vertexShaderSource = vertexCodeStr.c_str();
+		const char* fragmentShaderSource = fragmentCodeStr.c_str();
+
+		// 2. compile and link shaders
+		unsigned int vertex, fragment;
+		int success;
+		char log[512];
+
+		// vertex shader
+		vertex = glCreateShader(GL_VERTEX_SHADER);
+		glShaderSource(vertex, 1, &vertexShaderSource, NULL);
+		glCompileShader(vertex);
+		glGetShaderiv(vertex, GL_COMPILE_STATUS, &success);
+		if (!success) {
+			glGetShaderInfoLog(vertex, 512, NULL, log);
+			std::cerr << "Error compiling vertex shader: " 
+				<< log << std::endl;
+		}
+
+		// fragment shader
+		fragment = glCreateShader(GL_FRAGMENT_SHADER);
+		glShaderSource(fragment, 1, &fragmentShaderSource, NULL);
+		glCompileShader(fragment);
+		glGetShaderiv(fragment, GL_COMPILE_STATUS, &success);
+		if (!success) {
+			glGetShaderInfoLog(fragment, 512, NULL, log);
+			std::cerr << "Error compiling fragment shader: "
+				<< log << std::endl;
+		}
 	}
 
 	// activates shader program
