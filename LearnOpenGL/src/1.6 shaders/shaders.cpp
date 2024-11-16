@@ -9,17 +9,20 @@ const int LOG_SZ	= 512;
 
 const char *vertexShaderSource = "#version 330 core\n"
 "layout (location = 0) in vec3 aPos;\n"
+"layout (location = 1) in vec3 aColor;\n"
+"out vec3 ourColor;\n"
 "void main()\n"
 "{\n"
-" gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+" gl_Position = vec4(aPos, 1.0);\n"
+" ourColor = aColor;\n"
 "}\0";
 
 const char* fragmentShaderSource = "#version 330 core\n"
-"uniform vec4 ourColor;\n"
+"in vec3 ourColor;\n"
 "out vec4 FragColor;\n"
 "void main()\n"
 "{\n"
-" FragColor = ourColor;\n"
+" FragColor = vec4(ourColor, 1.0);\n"
 "}\0";
 
 void framebuffer_size_callback(GLFWwindow* window, int height, int width);
@@ -57,9 +60,10 @@ int main(void) {
 	///// VERTICES /////
 	////////////////////
 	float triangleVertices[] = {
-		-0.5f, -0.5f, 0.0f, 	
-		 0.5f, -0.5f, 0.0f, 	
-		 0.0f,  0.5f, 0.0f, 	
+	//  position				colors
+		-0.5f, -0.5f, 0.0f, 	1.0f, 0.0f, 0.0f,
+		 0.5f, -0.5f, 0.0f, 	0.0f, 1.0f, 0.0f,
+		 0.0f,  0.5f, 0.0f, 	0.0f, 0.0f, 1.0f,
 	};
 
 	///////////////
@@ -82,9 +86,14 @@ int main(void) {
 	//////////////////////
 	///// ATTRIBUTES /////
 	//////////////////////
-	// vertex array contains positional data (x,y,z)
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*) 0);
+	// set up positional data
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*) 0);
 	glEnableVertexAttribArray(0);
+
+	// set up color data
+	// offset is set to 3, since color starts after the positional data
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*) (3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
 
 
 	///////////////////
@@ -128,13 +137,6 @@ int main(void) {
 	//////////////////
 	///// RENDER /////
 	//////////////////
-	int uniformLocation = glGetUniformLocation(shaderProgram, "ourColor");
-	if (uniformLocation == -1) {
-		std::cerr << "Could not get uniform location for shader program\n" << std::endl;
-		exit(1);
-	}
-
-	float timeValue, greenValue;
 	while (!glfwWindowShouldClose(window)) {
 		processInput(window);
 
@@ -142,13 +144,8 @@ int main(void) {
 		glClearColor(0.1f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		// update uniform
-		glUseProgram(shaderProgram);
-		timeValue = glfwGetTime();
-		greenValue = (sin(timeValue) / 2.0f) + 0.5f;
-		glUniform4f(uniformLocation, 0.0f, greenValue, 0.0f, 1.0f); // continuously update the green value
-
 		// draw triangle
+		glUseProgram(shaderProgram);
 		glBindVertexArray(VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 
