@@ -14,8 +14,8 @@ public:
 		// 1. retrieve source code from file paths
 		std::string vertexCodeStr, fragmentCodeStr;
 		std::ifstream vertexFile, fragmentFile;
-		vertexFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-		fragmentFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+		vertexFile.exceptions	(std::ifstream::failbit | std::ifstream::badbit);
+        fragmentFile.exceptions (std::ifstream::failbit | std::ifstream::badbit);
 
 		try {
 			// open files
@@ -54,7 +54,7 @@ public:
 		glGetShaderiv(vertex, GL_COMPILE_STATUS, &success);
 		if (!success) {
 			glGetShaderInfoLog(vertex, 512, NULL, log);
-			std::cerr << "ERROR::VERTEX::SHADER::COMPILATION_FAILED"
+			std::cout << "ERROR::VERTEX::SHADER::COMPILATION_FAILED"
 				<< log << std::endl;
 		}
 
@@ -65,7 +65,7 @@ public:
 		glGetShaderiv(fragment, GL_COMPILE_STATUS, &success);
 		if (!success) {
 			glGetShaderInfoLog(fragment, 512, NULL, log);
-			std::cerr << "ERROR::FRAGMENT::SHADER::COMPILATION_FAILED"
+			std::cout << "ERROR::FRAGMENT::SHADER::COMPILATION_FAILED"
 				<< log << std::endl;
 		}
 
@@ -77,7 +77,7 @@ public:
 		glGetProgramiv(ID, GL_COMPILE_STATUS, &success);
 		if (!success) {
 			glGetProgramInfoLog(ID, 512, NULL, log);
-			std::cerr << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n"
+			std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n"
 				<< log << std::endl;
 		}
 
@@ -87,7 +87,7 @@ public:
 	}
 
 	// activates shader program
-	void use() {
+	void use() const {
 		glUseProgram(ID);
 	}
 

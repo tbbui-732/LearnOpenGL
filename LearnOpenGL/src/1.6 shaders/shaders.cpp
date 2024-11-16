@@ -8,23 +8,6 @@ const int scrHeight = 800;
 const int scrWidth	= 600;
 const int LOG_SZ	= 512;
 
-const char *vertexShaderSource = "#version 330 core\n"
-"layout (location = 0) in vec3 aPos;\n"
-"layout (location = 1) in vec3 aColor;\n"
-"out vec3 ourColor;\n"
-"void main()\n"
-"{\n"
-" gl_Position = vec4(aPos, 1.0);\n"
-" ourColor = aColor;\n"
-"}\0";
-
-const char* fragmentShaderSource = "#version 330 core\n"
-"in vec3 ourColor;\n"
-"out vec4 FragColor;\n"
-"void main()\n"
-"{\n"
-" FragColor = vec4(ourColor, 1.0);\n"
-"}\0";
 
 void framebuffer_size_callback(GLFWwindow* window, int height, int width);
 void processInput(GLFWwindow* window);
@@ -43,7 +26,7 @@ int main(void) {
 	// create glfw window
 	GLFWwindow* window = glfwCreateWindow(scrHeight, scrWidth, "LearnOpenGL", NULL, NULL);
 	if (window == nullptr) {
-		std::cerr << "Failed to initialize GLFW window" << std::endl;
+		std::cout << "Failed to initialize GLFW window" << std::endl;
 		glfwTerminate();
 		return -1;
 	}
@@ -52,7 +35,7 @@ int main(void) {
 
 	// set up glad pointer
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-		std::cerr << "Failed to initialize GLAD" << std::endl;
+		std::cout << "Failed to initialize GLAD" << std::endl;
 		glfwTerminate();
 		return -1;
 	}
@@ -100,39 +83,7 @@ int main(void) {
 	///////////////////
 	///// SHADERS /////
 	///////////////////
-	// create individual shaders
-	unsigned int vertexShader, fragmentShader;
-	vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-
-	// attach their sources
-	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-	glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-
-	// compile individual shaders
-	glCompileShader(vertexShader);
-	if (!programCompiled(vertexShader, "Vertex shader", false))
-		exit(1);
-
-	glCompileShader(fragmentShader);
-	if (!programCompiled(fragmentShader, "Fragment shader", false))
-		exit(1);
-
-	// attach individual shaders into shader program
-	unsigned int shaderProgram;
-	shaderProgram = glCreateProgram();
-	glAttachShader(shaderProgram, vertexShader);
-	glAttachShader(shaderProgram, fragmentShader);
-
-	// link shader program
-	glLinkProgram(shaderProgram);
-	if (!programCompiled(shaderProgram, "Shader program", true)) {
-		exit(1);
-	}
-
-	// clean-up/delete individual shaders
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
+	Shader shaderProgram("shader.vs", "shader.fs");
 
 
 	//////////////////
@@ -146,7 +97,7 @@ int main(void) {
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		// draw triangle
-		glUseProgram(shaderProgram);
+		shaderProgram.use();
 		glBindVertexArray(VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 
@@ -157,7 +108,6 @@ int main(void) {
 	// clean up buffers and shader program
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
-	glDeleteProgram(shaderProgram);
 	
 	glfwTerminate();
 	return 0;
@@ -171,28 +121,4 @@ void processInput(GLFWwindow* window) {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
 		glfwSetWindowShouldClose(window, true);
 	}
-}
-
-bool programCompiled(unsigned int& shader, const char* shaderName, bool isShaderProgram) {
-	int success;
-	char log[LOG_SZ];
-	if (!isShaderProgram) { // checks shaders
-		glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-		if (!success) {
-			glGetShaderInfoLog(shader, LOG_SZ, NULL, log);
-			std::cerr << shaderName << " was unable to compile properly\n"
-				<< log << std::endl;
-			return false;
-		}
-	}
-	else { // check shader programs
-		glGetProgramiv(shader, GL_COMPILE_STATUS, &success);
-		if (!success) {
-			glGetProgramInfoLog(shader, LOG_SZ, NULL, log);
-			std::cerr << shaderName << " was unable to compile properly\n"
-				<< log << std::endl;
-			return false;
-		}
-	}
-	return true;
 }
