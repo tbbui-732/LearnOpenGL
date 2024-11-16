@@ -2,6 +2,7 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include <cstdlib>
+#include "../../dependencies/include/learnopengl/shader.h"
 
 const int scrHeight = 800;
 const int scrWidth	= 600;
