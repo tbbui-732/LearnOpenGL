@@ -2,11 +2,14 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include <cstdlib>
+#include <filesystem>
 #include "../../dependencies/include/learnopengl/shader.h"
 
 const int scrHeight = 800;
 const int scrWidth	= 600;
 const int LOG_SZ	= 512;
+
+const std::string shaderPath = std::filesystem::current_path().string() + "/shaders/";
 
 
 void framebuffer_size_callback(GLFWwindow* window, int height, int width);
@@ -83,7 +86,10 @@ int main(void) {
 	///////////////////
 	///// SHADERS /////
 	///////////////////
-	Shader shaderProgram("shader.vs", "shader.fs");
+	std::string vertPath, fragPath;
+	vertPath = shaderPath + "shader.vs";
+	fragPath = shaderPath + "shader.fs";
+	Shader shaderProgram(vertPath.c_str(), fragPath.c_str());
 
 
 	//////////////////
