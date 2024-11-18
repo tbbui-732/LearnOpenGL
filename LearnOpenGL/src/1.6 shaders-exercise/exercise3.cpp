@@ -106,7 +106,7 @@ int main(void) {
 		// calculate horizontal offset
 		float offset = std::sin(glfwGetTime()) / 2.0;
 
-		// draw triangle
+		// draw triangle 
 		shaderProgram.use();
 		shaderProgram.setFloat("colorOffset", offset);
 		glBindVertexArray(VAO);
