@@ -7,14 +7,11 @@
 
 const int scrHeight = 800;
 const int scrWidth	= 600;
-const int LOG_SZ	= 512;
 
-const std::string shaderPath = std::filesystem::current_path().string() + "/src/1.6 shaders-exercise/shaders/";
-
+const std::string shaderPath = std::filesystem::current_path().string() + "/src/1.7 textures/shaders/";
 
 void framebuffer_size_callback(GLFWwindow* window, int height, int width);
 void processInput(GLFWwindow* window);
-bool programCompiled(unsigned int& shader, const char* shaderName, bool isShaderProgram);
 
 int main(void) {
 	/////////////////////////
@@ -61,15 +58,6 @@ int main(void) {
 	glBindVertexArray(VAO);
 
 
-	///////////////
-	///// VBO /////
-	///////////////
-	unsigned int VBO;
-	glGenBuffers(1, &VBO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(triangleVertices), triangleVertices, GL_STATIC_DRAW);
-
-
 	//////////////////////
 	///// ATTRIBUTES /////
 	//////////////////////
@@ -83,12 +71,21 @@ int main(void) {
 	glEnableVertexAttribArray(1);
 
 
+	///////////////
+	///// VBO /////
+	///////////////
+	unsigned int VBO;
+	glGenBuffers(1, &VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(triangleVertices), triangleVertices, GL_STATIC_DRAW);
+
+
 	///////////////////
 	///// SHADERS /////
 	///////////////////
 	std::string vertPath, fragPath;
-	vertPath = shaderPath + "shader3.vs";
-	fragPath = shaderPath + "shader3.fs";
+	vertPath = shaderPath + "shader.vs";
+	fragPath = shaderPath + "shader.fs";
 	Shader shaderProgram(vertPath.c_str(), fragPath.c_str());
 
 

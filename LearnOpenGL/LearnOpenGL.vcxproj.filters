@@ -18,7 +18,7 @@
     <ClCompile Include="glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\1.6 shaders-exercise\exercise3.cpp">
+    <ClCompile Include="src\1.7 textures\textures.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -45,7 +45,7 @@
   <ItemGroup>
     <None Include="shaders\shader.fs" />
     <None Include="shaders\shader.vs" />
-    <None Include="src\1.6 shaders-exercise\shaders\shader3.fs" />
-    <None Include="src\1.6 shaders-exercise\shaders\shader3.vs" />
+    <None Include="src\1.7 textures\shaders\shader.fs" />
+    <None Include="src\1.7 textures\shaders\shader.vs" />
   </ItemGroup>
 </Project>
