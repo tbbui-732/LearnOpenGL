@@ -59,7 +59,9 @@ int main(void) {
 		1.0f, 0.0f, // bottom right
 		0.5f, 1.0f, // bottom top
 	};
-	
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
 
 	///////////////
 	///// VAO /////
