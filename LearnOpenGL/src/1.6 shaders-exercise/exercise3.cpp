@@ -88,8 +88,8 @@ int main(void) {
 	///// SHADERS /////
 	///////////////////
 	std::string vertPath, fragPath;
-	vertPath = shaderPath + "shader2.vs";
-	fragPath = shaderPath + "shader2.fs";
+	vertPath = shaderPath + "shader3.vs";
+	fragPath = shaderPath + "shader3.fs";
 	Shader shaderProgram(vertPath.c_str(), fragPath.c_str());
 
 
@@ -108,7 +108,7 @@ int main(void) {
 
 		// draw triangle
 		shaderProgram.use();
-		shaderProgram.setFloat("horizontalOffset", offset);
+		shaderProgram.setFloat("colorOffset", offset);
 		glBindVertexArray(VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 
