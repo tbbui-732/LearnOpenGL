@@ -136,7 +136,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="glad.c" />
-    <ClCompile Include="src\1.6 shaders-exercise\exercise1.cpp" />
+    <ClCompile Include="src\1.6 shaders-exercise\exercise2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dependencies\include\glad\glad.h" />
@@ -151,8 +151,8 @@
   <ItemGroup>
     <None Include="shaders\shader.fs" />
     <None Include="shaders\shader.vs" />
-    <None Include="src\1.6 shaders-exercise\shaders\shader1.fs" />
-    <None Include="src\1.6 shaders-exercise\shaders\shader1.vs" />
+    <None Include="src\1.6 shaders-exercise\shaders\shader2.fs" />
+    <None Include="src\1.6 shaders-exercise\shaders\shader2.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
