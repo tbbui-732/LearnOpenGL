@@ -50,6 +50,17 @@ int main(void) {
 		 0.0f,  0.5f, 0.0f, 	0.0f, 0.0f, 1.0f,
 	};
 
+
+	////////////////////
+	///// TEXTURES /////
+	////////////////////
+	float textureCoordinates[] = {
+		0.0f, 0.0f, // bottom left
+		1.0f, 0.0f, // bottom right
+		0.5f, 1.0f, // bottom top
+	};
+	
+
 	///////////////
 	///// VAO /////
 	///////////////
