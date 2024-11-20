@@ -54,14 +54,21 @@ int main(void) {
 	////////////////////
 	///// TEXTURES /////
 	////////////////////
+	// coordinates
 	float textureCoordinates[] = {
 		0.0f, 0.0f, // bottom left
 		1.0f, 0.0f, // bottom right
 		0.5f, 1.0f, // bottom top
 	};
 
+	// texture repeat behavior
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+
+	// mip-map texture filtering
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
 
 	///////////////
 	///// VAO /////
