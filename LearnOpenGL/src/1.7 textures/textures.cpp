@@ -10,6 +10,7 @@ const int scrHeight = 800;
 const int scrWidth	= 600;
 
 const std::string shaderPath = std::filesystem::current_path().string() + "/src/1.7 textures/shaders/";
+const std::string texturePath = std::filesystem::current_path().string() + "/resources/textures/";
 
 void framebuffer_size_callback(GLFWwindow* window, int height, int width);
 void processInput(GLFWwindow* window);
@@ -65,6 +66,11 @@ int main(void) {
 	// texture wrapping; blocky when minifying and smooth when magnifying
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	// load texture
+	int texWidth, texHeight, texNChannels;
+	std::string containerImage = texturePath + "container.jpg";
+	unsigned char* data = stbi_load(containerImage.c_str(), &texWidth, &texHeight, &texNChannels, 0);
 
 
 	///////////////

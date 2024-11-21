@@ -52,4 +52,9 @@
     <None Include="src\1.7 textures\shaders\shader.fs" />
     <None Include="src\1.7 textures\shaders\shader.vs" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="resources\textures\container.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
 </Project>
