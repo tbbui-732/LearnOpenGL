@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <filesystem>
 #include "../../dependencies/include/learnopengl/shader.h"
+#include "../../dependencies/include/stb_image/stb_image.h"
 
 const int scrHeight = 800;
 const int scrWidth	= 600;
@@ -44,28 +45,24 @@ int main(void) {
 	///// VERTICES /////
 	////////////////////
 	float triangleVertices[] = {
-	//  position				colors
-		-0.5f, -0.5f, 0.0f, 	1.0f, 0.0f, 0.0f,
-		 0.5f, -0.5f, 0.0f, 	0.0f, 1.0f, 0.0f,
-		 0.0f,  0.5f, 0.0f, 	0.0f, 0.0f, 1.0f,
+		//  position				colors
+			-0.5f, -0.5f, 0.0f, 	1.0f, 0.0f, 0.0f,
+			 0.5f, -0.5f, 0.0f, 	0.0f, 1.0f, 0.0f,
+			 0.0f,  0.5f, 0.0f, 	0.0f, 0.0f, 1.0f,
 	};
 
 
 	////////////////////
 	///// TEXTURES /////
 	////////////////////
-	// coordinates
-	float textureCoordinates[] = {
-		0.0f, 0.0f, // bottom left
-		1.0f, 0.0f, // bottom right
-		0.5f, 1.0f, // bottom top
+	// texture coordinates
+	float texCoords[] = {
+		0.0f, 0.0f, 0.0f,
+		0.0f, 1.0f, 0.0f,
+		0.5f, 1.0f, 0.0f,
 	};
 
-	// texture repeat behavior
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
-
-	// mip-map texture filtering
+	// texture wrapping; blocky when minifying and smooth when magnifying
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
@@ -78,19 +75,6 @@ int main(void) {
 	glBindVertexArray(VAO);
 
 
-	//////////////////////
-	///// ATTRIBUTES /////
-	//////////////////////
-	// set up positional data
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*) 0);
-	glEnableVertexAttribArray(0);
-
-	// set up color data
-	// offset is set to 3, since color starts after the positional data
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*) (3 * sizeof(float)));
-	glEnableVertexAttribArray(1);
-
-
 	///////////////
 	///// VBO /////
 	///////////////
@@ -98,6 +82,16 @@ int main(void) {
 	glGenBuffers(1, &VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(triangleVertices), triangleVertices, GL_STATIC_DRAW);
+
+
+	//////////////////////
+	///// ATTRIBUTES /////
+	//////////////////////
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*) 0);
+	glEnableVertexAttribArray(0);
+
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*) (3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
 
 
 	///////////////////
@@ -116,15 +110,11 @@ int main(void) {
 		processInput(window);
 
 		// background
-		glClearColor(1.0f, 0.8f, 0.9f, 1.0f);
+		glClearColor(0.1f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		// calculate horizontal offset
-		float offset = std::sin(glfwGetTime()) / 2.0;
-
-		// draw triangle 
+		// draw triangle
 		shaderProgram.use();
-		shaderProgram.setFloat("colorOffset", offset);
 		glBindVertexArray(VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 
